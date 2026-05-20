@@ -10,13 +10,13 @@ def repartirCarta():
     carta = random.choice(Mazo)
     MANO.append(carta)
     print(f"Carta repartida:  {carta.nombre}{carta.palo}")
-    valorMano=calcularValorMano()
+    valorMano=calcularValorMano(MANO)
     print(f"Valor actual de la mano: {valorMano}")
-    mostrarMano()
-    validarVictoria()
+    mostrarMano(MANO)
+    validarVictoria(valorMano)
 
 #funcion para mostrar la mano actual y su valor total
-def mostrarMano():
+def mostrarMano(mano):
     print("-"*30)
     print("Mano actual: ")
    
@@ -24,7 +24,7 @@ def mostrarMano():
     lineaMedia = ""
     lineaInferior = ""
 
-    for carta in MANO:
+    for carta in mano:
         sup, med, inf = mostrarCarta(carta)
         lineaSuperior += sup
         lineaMedia += med
@@ -34,7 +34,7 @@ def mostrarMano():
     print(lineaMedia)
     print(lineaInferior)
     
-    valorMano = calcularValorMano()    
+    valorMano = calcularValorMano(mano)    
     print(f"{valorMano} puntos actuales")
     print("-"*30)
 
@@ -52,9 +52,9 @@ def jugar():
         if opcion == "1":
             repartirCarta()
         elif opcion == "2":
-            mostrarMano()
+            mostrarMano(MANO)
         elif opcion == "3":
-            mostrarMano()
+            mostrarMano(MANO)
             print(f"¡Gracias por jugar! resultado final: {sum(carta.valor for carta in MANO)} puntos")
             MANO.clear()
         elif opcion == "4":
@@ -65,15 +65,11 @@ def jugar():
 
             
 #funcion para calcular el valor total de la mano
-def calcularValorMano():
-    valorTotal=0
-    for carta in MANO:
-        valorTotal += carta.valor
-    return valorTotal
+def calcularValorMano(mano):
+    return sum(carta.valor for carta in mano)
 
 #funcion para validar si el jugador ha ganado o perdido
-def validarVictoria():
-    valorMano=calcularValorMano()
+def validarVictoria(valorMano):
     if valorMano > 21:
         print("¡Has perdido! El valor de tu mano ha superado los 21 puntos.")
         MANO.clear()
