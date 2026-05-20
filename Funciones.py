@@ -1,11 +1,14 @@
 import random
-from Baraja import Mazo
+from Baraja import crearMazo
 
 #arreglo que mantiene las cartas repartidas al jugador en la mano actual
 MANO=[]
 
+#creacion del mazo de cartas
+Mazo = []
+
 #funcion para repartir una carta al jugador y mostrar el valor actual de la mano
-def repartirCarta():
+def repartirCarta(Mazo, MANO):
     print("-"*30)
     carta = random.choice(Mazo)
     MANO.append(carta)
@@ -41,22 +44,23 @@ def mostrarMano(mano):
 
 #Funcion principal que corre el juego y muestra el menu
 def jugar():
+    Mazo = crearMazo()
     while True:
         print("\nOpciones:")
         print("1. Repartir carta")
         print("2. Mostrar mano")
-        print("3. Mostrar resultado y salir")
+        print("3. Mostrar resultado y volver a jugar")
         print("4. Salir")
         opcion = input("Selecciona una opción: ")
 
         if opcion == "1":
-            repartirCarta()
+            repartirCarta(Mazo, MANO)
         elif opcion == "2":
             mostrarMano(MANO)
         elif opcion == "3":
             mostrarMano(MANO)
             print(f"¡Gracias por jugar! resultado final: {sum(carta.valor for carta in MANO)} puntos")
-            MANO.clear()
+            resetearJuego(Mazo, MANO)
         elif opcion == "4":
             print("hasta luego!")
             break
@@ -91,3 +95,8 @@ def mostrarCarta(carta):
         inf = "└─────┘ "
         return sup, med, inf
 
+#funcion para resetear el juego y volver a crear el mazo
+def resetearJuego(Mazo, MANO):
+    MANO.clear()
+    Mazo.clear()
+    Mazo.extend(crearMazo())
