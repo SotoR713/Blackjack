@@ -66,7 +66,12 @@ def jugar():
             
 #funcion para calcular el valor total de la mano
 def calcularValorMano(mano):
-    return sum(carta.valor for carta in mano)
+    sumatoriaPuntos = sum(carta.valor for carta in mano)
+    for carta in mano:
+        if carta.nombre == "A" and sumatoriaPuntos + 10 <= 21:
+            sumatoriaPuntos += 10
+
+    return sumatoriaPuntos
 
 #funcion para validar si el jugador ha ganado o perdido
 def validarVictoria(valorMano):
@@ -85,3 +90,4 @@ def mostrarCarta(carta):
         med = f"│ { "" if carta.nombre == "10" else " "  }{carta.nombre}{carta.palo} │ "
         inf = "└─────┘ "
         return sup, med, inf
+
