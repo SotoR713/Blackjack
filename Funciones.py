@@ -42,11 +42,11 @@ def mostrarMano(mano):
 
 #Funcion principal que corre el juego y muestra el menu
 def iniciarJuego():
-    manoJugador = []
-    manoCasa = []
 
     while True:
         Mazo = crearMazo()
+        manoJugador = []
+        manoCasa = []
         print("\nOpciones:")
         print("1. Jugar")
         print("2. Salir")
