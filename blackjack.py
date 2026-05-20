@@ -1,5 +1,5 @@
-from Funciones import  jugar
+from Funciones import  iniciarJuego
 
 
 
-jugar()
+iniciarJuego()
