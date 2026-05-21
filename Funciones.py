@@ -6,12 +6,10 @@ from Baraja import crearMazo
 def repartirCarta(Mazo, manoJugador, manoCasa):
     print("-"*30)
     validarMazoVacio(Mazo)    
-    carta = random.choice(Mazo)
-    manoJugador.append(carta)
-    eliminarCarta(Mazo, carta)
+    carta = lanzarCarta(manoJugador, Mazo)
     print(f"Carta repartida:  {carta.nombre}{carta.palo}")
-    valorMano=calcularValorMano(manoJugador)
-    print(f"Valor actual de la mano: {valorMano}")
+    valorManoJugador=calcularValorMano(manoJugador)
+    print(f"Valor actual de la mano: {valorManoJugador}")
     mostrarManoCasaOculta(manoCasa)
     mostrarMano(manoJugador)
     
@@ -65,6 +63,7 @@ def iniciarJuego():
         else:
             print("Opción no válida, por favor intenta de nuevo.")
 
+
 def seguirJuego(Mazo, manoJugador, manoCasa):
     while True:
         print("\n¿que deseas hacer?")
@@ -81,10 +80,15 @@ def seguirJuego(Mazo, manoJugador, manoCasa):
                 break
 
         elif opcion == "2":
-            print(
-                f"¡Gracias por jugar! resultado final: "
-                f"{calcularValorMano(manoJugador)} puntos"
-            )
+            repartirCartaCasa(Mazo, manoCasa)
+
+            print(mostrarMano(manoCasa))
+            print(mostrarMano(manoJugador))
+            # print(
+            #     f"¡Gracias por jugar! resultado final: "
+            #     f"{calcularValorMano(manoJugador)} puntos"
+            # )
+            compararResultados(calcularValorMano(manoCasa), calcularValorMano(manoJugador))
             break
 
         else:
@@ -107,14 +111,12 @@ def validarVictoria(valorMano,manoCasa,manoJugador):
         print("¡Has perdido! El valor de tu mano ha superado los 21 puntos.")
         mostrarMano(manoCasa)
         mostrarMano(manoJugador)
-        manoJugador.clear()
-        manoCasa.clear()
         print("-"*30)
         return True
     elif valorMano == 21:
         print("¡Felicidades! Has ganado con un Blackjack.")
-        manoJugador.clear()
-        manoCasa.clear()
+        mostrarMano(manoCasa)
+        mostrarMano(manoJugador)
         print("-"*30)
         return True
     
@@ -134,18 +136,10 @@ def eliminarCarta(Mazo, carta):
 
 def repartirCartaPrimero(Mazo, manoJugador, manoCasa):
     print("-"*30)
-    carta = random.choice(Mazo)
-    manoJugador.append(carta)
-    eliminarCarta(Mazo, carta)
-    carta = random.choice(Mazo)
-    manoJugador.append(carta)
-    eliminarCarta(Mazo, carta)
-    carta = random.choice(Mazo)
-    manoCasa.append(carta)
-    eliminarCarta(Mazo, carta)
-    carta = random.choice(Mazo)
-    manoCasa.append(carta)
-    eliminarCarta(Mazo, carta)
+    lanzarCarta(manoJugador, Mazo)
+    lanzarCarta(manoCasa, Mazo)
+    lanzarCarta(manoJugador, Mazo)
+    lanzarCarta(manoCasa, Mazo)
     mostrarManoCasaOculta(manoCasa)
     mostrarMano(manoJugador)
     print(f"Valor actual de la mano: {calcularValorMano(manoJugador)}")
@@ -194,3 +188,31 @@ def validarMazoVacio(Mazo):
         print("El mazo se ha quedado sin cartas, reiniciando el mazo...")
         Mazo.extend(crearMazo())  
      
+
+def lanzarCarta(mano, mazo):
+    carta = random.choice(mazo)
+    mano.append(carta)
+    eliminarCarta(mazo, carta)
+    return carta
+
+def repartirCartaCasa(Mazo, manoCasa):
+        validarMazoVacio(Mazo)
+        valorManoCasa = calcularValorMano(manoCasa)
+
+        while valorManoCasa < 17:
+            print("La casa decide repartir una carta...")
+            carta = lanzarCarta(manoCasa, Mazo)
+            print(f"Carta repartida a la casa: {carta.nombre}{carta.palo}")
+            valorManoCasa = calcularValorMano(manoCasa)
+            print(f"Valor actual de la mano de la casa: {valorManoCasa}")
+        return valorManoCasa
+
+def compararResultados(valorManoCasa, valorManoJugador):
+    if valorManoCasa > 21:
+        print("¡La casa se ha pasado de 21! Has ganado.")
+    elif valorManoCasa > valorManoJugador:
+        print("¡La casa gana! Mejor suerte la próxima vez.")
+    elif valorManoCasa < valorManoJugador:
+        print("¡Felicidades! Has ganado.")
+    else:
+        print("¡Es un empate!")
