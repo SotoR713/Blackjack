@@ -82,8 +82,8 @@ def seguirJuego(Mazo, manoJugador, manoCasa):
         elif opcion == "2":
             repartirCartaCasa(Mazo, manoCasa)
 
-            print(mostrarMano(manoCasa))
-            print(mostrarMano(manoJugador))
+            mostrarMano(manoCasa)
+            mostrarMano(manoJugador)
             # print(
             #     f"¡Gracias por jugar! resultado final: "
             #     f"{calcularValorMano(manoJugador)} puntos"
@@ -142,7 +142,7 @@ def repartirCartaPrimero(Mazo, manoJugador, manoCasa):
     lanzarCarta(manoCasa, Mazo)
     mostrarManoCasaOculta(manoCasa)
     mostrarMano(manoJugador)
-    print(f"Valor actual de la mano: {calcularValorMano(manoJugador)}")
+#   print(f"Valor actual de la mano: {calcularValorMano(manoJugador)}")
     return primeraVictoria(manoJugador, manoCasa)
 
 def primeraVictoria(manoJugador, manoCasa):
